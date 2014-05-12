@@ -34,7 +34,7 @@ end
 
 #scrape first results page
 agent = Mechanize.new { |a|
-  a.user_agent_alias = 'Mac Firefox'
+  #a.user_agent_alias = 'Mac Firefox'
 }
 url = "https://eservices.fremantle.wa.gov.au/ePropertyPROD/P1/eTrack/eTrackApplicationSearchResults.aspx?Field=S&Period=L7&r=P1.WEBGUEST&f=%24P1.ETR.SEARCH.SL7"
 $page = agent.get(url)
