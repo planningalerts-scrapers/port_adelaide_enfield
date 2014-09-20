@@ -3,12 +3,14 @@
 require 'scraperwiki'
 require 'mechanize'
 
+# Forked from https://github.com/planningalerts-scrapers/fremantle
+
 def scrape_page(page)
   page.search("tr[@class='normalRow'], tr[@class='alternateRow']").each do |row|
     cells = row.search('td')
 
     council_reference = cells[0].search("a").text
-    if council_reference && council_reference.start_with?("DA", "LL", "VA", "WAPC") #selects planning applications only
+    if council_reference && council_reference.start_with?("040") #selects planning applications only
       puts "Found #{council_reference}"
       save_record(council_reference, cells)
     else
@@ -22,8 +24,8 @@ def save_record(council_reference, cells)
   'council_reference' => council_reference,
   'address' => cells[5].search("a").text,
   'description' => cells[2].text,
-  'info_url' => 'https://eservices.fremantle.wa.gov.au/ePropertyPROD/P1/eTrack/eTrackApplicationSearch.aspx?r=P1.WEBGUEST&f=%24P1.ETR.SEARCH.ENQ',
-  'comment_url' => 'mailto:info@fremantle.wa.gov.au',
+  'info_url' => 'https://ecouncil.portenf.sa.gov.au/T1PRWebPROD/eProperty/P1/eTrack/eTrackApplicationSearch.aspx?r=P1.WEBGUEST&f=%24P1.ETR.SEARCH.ENQ',
+  'comment_url' => 'mailto:info@portenf.sa.gov.au',
   'date_received' => Date.parse(cells[1].text).strftime("%Y-%m-%d"),
   'date_scraped' => Date.today.to_s,
   }
@@ -38,7 +40,7 @@ end
 agent = Mechanize.new { |a|
   #a.user_agent_alias = 'Mac Firefox'
 }
-url = "https://eservices.fremantle.wa.gov.au/ePropertyPROD/P1/eTrack/eTrackApplicationSearchResults.aspx?Field=S&Period=L7&r=P1.WEBGUEST&f=%24P1.ETR.SEARCH.SL7"
+url = "https://ecouncil.portenf.sa.gov.au/T1PRWebPROD/eProperty/P1/eTrack/eTrackApplicationSearchResults.aspx?Field=S&Period=L7&r=P1.WEBGUEST&f=%24P1.ETR.SEARCH.SL7"
 page = agent.get(url)
 scrape_page(page)
 
