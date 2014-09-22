@@ -22,7 +22,7 @@ end
 def save_record(council_reference, cells)
   record = {
   'council_reference' => council_reference,
-  'address' => cells[5].search("a").text,
+  'address' => cells[3].text,
   'description' => cells[2].text,
   'info_url' => 'https://ecouncil.portenf.sa.gov.au/T1PRWebPROD/eProperty/P1/eTrack/eTrackApplicationSearch.aspx?r=P1.WEBGUEST&f=%24P1.ETR.SEARCH.ENQ',
   'comment_url' => 'mailto:info@portenf.sa.gov.au',
