@@ -30,7 +30,7 @@ def save_record(council_reference, cells)
   'date_received' => Date.parse(cells[1].text).strftime("%Y-%m-%d"),
   'date_scraped' => Date.today.to_s,
   }
-  p record
+
   if (ScraperWiki.select("* from data where `council_reference`='#{record['council_reference']}'").empty? rescue true)
     ScraperWiki.save_sqlite(['council_reference'], record)
   else
