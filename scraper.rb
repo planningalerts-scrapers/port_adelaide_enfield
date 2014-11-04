@@ -2,6 +2,7 @@
 
 require 'scraperwiki'
 require 'mechanize'
+require 'uri'
 
 # Forked from https://github.com/planningalerts-scrapers/fremantle
 
@@ -24,11 +25,12 @@ def save_record(council_reference, cells)
   'council_reference' => council_reference,
   'address' => cells[3].text,
   'description' => cells[2].text,
-  'info_url' => 'https://ecouncil.portenf.sa.gov.au/T1PRWebPROD/eProperty/P1/eTrack/eTrackApplicationSearch.aspx?r=P1.WEBGUEST&f=%24P1.ETR.SEARCH.ENQ',
+  'info_url' => "https://ecouncil.portenf.sa.gov.au/T1PRWebPROD/eProperty/P1/eTrack/eTrackApplicationDetails.aspx?r=PAE.P1.WEBGUEST&f=%24P1.ETR.APPDET.VIW&ApplicationId=#{URI::escape(council_reference)}",
   'comment_url' => 'mailto:info@portenf.sa.gov.au',
   'date_received' => Date.parse(cells[1].text).strftime("%Y-%m-%d"),
   'date_scraped' => Date.today.to_s,
   }
+
   if (ScraperWiki.select("* from data where `council_reference`='#{record['council_reference']}'").empty? rescue true)
     ScraperWiki.save_sqlite(['council_reference'], record)
   else
